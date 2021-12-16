@@ -16,4 +16,4 @@ git clone https://github.com/lua-wow-tools/wowless
 cd wowless
 luarocks build
 mkdir mount
-ln -s $PWD/mount/luadbd /root/.cache/luadbd
+ln -s "$PWD/mount/luadbd" /root/.cache/luadbd

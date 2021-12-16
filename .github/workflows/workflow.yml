@@ -1,0 +1,40 @@
+name: workflow
+on:
+  pull_request:
+  push:
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y luarocks
+        sudo luarocks install luacheck
+    - uses: pre-commit/action@v2.0.3
+  build:
+    needs: pre-commit
+    runs-on: ubuntu-latest
+    steps:
+    - uses: google-github-actions/auth@v0
+      with:
+        credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_JSON }}
+    - uses: google-github-actions/setup-gcloud@v0
+    - run: gcloud auth configure-docker us-central1-docker.pkg.dev
+    - uses: docker/build-push-action@v2
+      with:
+        push: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+        tags: us-central1-docker.pkg.dev/www-wowless-dev/docker/wowless:latest
+  release:
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: google-github-actions/auth@v0
+      with:
+        credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_JSON }}
+    - uses: google-github-actions/deploy-cloudrun@v0
+      with:
+        image: us-central1-docker.pkg.dev/www-wowless-dev/docker/wowless
+        service: wowless

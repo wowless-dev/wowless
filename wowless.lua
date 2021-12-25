@@ -16,7 +16,4 @@ local loglevel = tonumber(args.loglevel or 0)
 if not loglevel then
   return ngx.exit(400)
 end
-local pipe = assert(io.popen(('sh query.sh %d %s %s 2>&1'):format(loglevel, product, map[product])))
-local content = pipe:read('*all')
-pipe:close()
-ngx.print(content)
+os.execute(('sh query.sh %d %s %s'):format(loglevel, product, map[product]))

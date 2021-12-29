@@ -16,4 +16,8 @@ local loglevel = tonumber(args.loglevel or 0)
 if not loglevel then
   return ngx.exit(400)
 end
-os.execute(('sh query.sh %d %s %s'):format(loglevel, product, map[product]))
+local addon = tonumber(args.addon or 0)
+if not addon then
+  return ngx.exit(400)
+end
+os.execute(('sh query.sh %d %s %s %d'):format(loglevel, product, map[product], addon))

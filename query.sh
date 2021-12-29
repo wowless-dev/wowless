@@ -13,7 +13,7 @@ ts=$(date +%s)
 if [ -f "$addonfile" ]; then
   addondir="extracts/addons/$addon-$gameversion/Interface/AddOns"
   mkdir -p "$addondir"
-  ln -sf "$addondir" "extracts/addons/$gameversion"
+  ln -sf "$addon-$gameversion/Interface/AddOns" "extracts/addons/$gameversion"
   unzip -qq -o -d "$addondir" "$addonfile"
   for d in "$addondir"/*; do
     out="logs/$product-$addon-$(basename "$d")-$ts.txt"

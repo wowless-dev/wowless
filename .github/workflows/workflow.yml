@@ -2,6 +2,7 @@ name: workflow
 on:
   pull_request:
   push:
+  workflow_dispatch:
 jobs:
   pre-commit:
     runs-on: ubuntu-latest

@@ -16,8 +16,8 @@ local loglevel = tonumber(args.loglevel or 0)
 if not loglevel then
   return ngx.exit(400)
 end
-local addon = args.addon or 0
-local f = io.popen(('sh query.sh %d %s %s %d'):format(loglevel, product, map[product], addon))
+local addon = tostring(args.addon or 0)
+local f = io.popen(('sh query.sh %d %s %s %s'):format(loglevel, product, map[product], addon))
 local content = f:read('*all')
 f:close()
 ngx.print(content)

@@ -3,12 +3,23 @@ loglevel=$1
 product=$2
 gameversion=$3
 addon=$4
-version=$(cat "mount/extracts/$product.txt")
-mkdir -p extracts
-unzip -qq -o -d extracts "mount/extracts/$version.zip"
-lua tools/gextract.lua "mount/gscrapes/$version.lua" > "extracts/$version/Interface/GlobalEnvironment.lua"
+rm -rf extracts out
+mkdir extracts out
+export HOME=/root
+gsutil -m rsync -u gs://wowless.dev/luadbd "$HOME"/.cache/luadbd
+gsutil -m cp \
+  "gs://wowless.dev/extracts/$product.txt" \
+  "gs://wowless.dev/addons/$addon-$gameversion.zip" \
+  extracts
+version=$(cat "extracts/$product.txt")
+gsutil -m cp \
+  "gs://wowless.dev/extracts/$version.zip" \
+  "gs://wowless.dev/gscrapes/$version.lua" \
+  extracts
+unzip -qq -o -d extracts "extracts/$version.zip"
+lua tools/gextract.lua "extracts/$version.lua" > "extracts/$version/Interface/GlobalEnvironment.lua"
 ln -sf "$version" "extracts/$product"
-addonfile="mount/addons/$addon-$gameversion.zip"
+addonfile="extracts/$addon-$gameversion.zip"
 ts=$(date +%s)
 if [ -f "$addonfile" ]; then
   addondir="extracts/addons/$addon-$gameversion/Interface/AddOns"
@@ -16,12 +27,13 @@ if [ -f "$addonfile" ]; then
   ln -sf "$addon-$gameversion/Interface/AddOns" "extracts/addons/$gameversion"
   unzip -qq -o -d "$addondir" "$addonfile"
   for d in "$addondir"/*; do
-    out="logs/$product-$addon-$(basename "$d")-$ts.txt"
-    env HOME=/root /usr/local/bin/lua wowless.lua "$loglevel" "$product" "$gameversion" "$d" > "mount/$out"
-    echo "gs://wowless.dev/$out"
+    out="$product-$addon-$(basename "$d")-$ts.txt"
+    env HOME=/root /usr/local/bin/lua wowless.lua "$loglevel" "$product" "$gameversion" "$d" > "out/$out"
+    gsutil cp "out/$out" "gs://wowless.dev/logs/$out"
+    echo "gs://wowless.dev/logs/$out"
   done
 else
-  out="logs/$product-$ts.txt"
-  env HOME=/root /usr/local/bin/lua wowless.lua "$loglevel" "$product" "$gameversion" > "mount/$out"
-  echo "gs://wowless.dev/$out"
+  out="$product-$ts.txt"
+  env HOME=/root /usr/local/bin/lua wowless.lua "$loglevel" "$product" "$gameversion" > "out/$out"
+  echo "gs://wowless.dev/logs/$out"
 fi

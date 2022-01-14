@@ -6,7 +6,7 @@ addon=$4
 rm -rf extracts out
 mkdir extracts out
 export HOME=/root
-alias gsutil="CLOUDSDK_PYTHON=/usr/bin/python gsutil"
+alias gsutil="CLOUDSDK_PYTHON=/usr/bin/python3 gsutil"
 gsutil -m rsync -u gs://wowless.dev/luadbd "$HOME"/.cache/luadbd
 gsutil -m cp \
   "gs://wowless.dev/extracts/$product.txt" \

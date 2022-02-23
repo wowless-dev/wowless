@@ -15,6 +15,7 @@ jobs:
         sudo apt-get install -y luarocks
         sudo luarocks install luacheck
     - uses: pre-commit/action@v2.0.3
+    - uses: satackey/action-docker-layer-caching@v0.0.11
     - run: docker-compose build
   release:
     if: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
@@ -29,6 +30,7 @@ jobs:
         credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_JSON }}
     - uses: google-github-actions/setup-gcloud@v0
     - run: gcloud auth configure-docker us-central1-docker.pkg.dev
+    - uses: satackey/action-docker-layer-caching@v0.0.11
     - run: docker-compose build
     - run: docker tag wowless/web us-central1-docker.pkg.dev/www-wowless-dev/docker/wowless:latest
     - run: docker push us-central1-docker.pkg.dev/www-wowless-dev/docker/wowless:latest

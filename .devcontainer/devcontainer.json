@@ -1,0 +1,6 @@
+{
+    "dockerComposeFile": ["../docker-compose.yml", "docker-compose.extend.yml"],
+    "initializeCommand": "git submodule update --init --recursive",
+    "service": "web",
+    "workspaceFolder": "/workspace",
+}

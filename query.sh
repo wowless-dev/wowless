@@ -7,8 +7,6 @@ rm -rf extracts out
 mkdir extracts out
 export HOME=/root
 alias gsutil="CLOUDSDK_PYTHON=/usr/bin/python3 gsutil"
-git pull
-luarocks build --no-install
 gsutil -m rsync -u gs://wowless.dev/luadbd "$HOME"/.cache/luadbd
 gsutil -m cp \
   "gs://wowless.dev/extracts/$product.txt" \
@@ -31,13 +29,13 @@ if [ -f "$addonfile" ]; then
   unzip -qq -o -d "$addondir" "$addonfile"
   for d in "$addondir"/*; do
     out="$product-$addon-$(basename "$d")-$ts.txt"
-    env HOME=/root /usr/local/bin/lua wowless.lua "$loglevel" "$product" "$gameversion" "$d" > "out/$out"
+    env HOME=/root bin/run.sh "$loglevel" "$product" "$gameversion" "$d" > "out/$out"
     gsutil cp "out/$out" "gs://wowless.dev/logs/$out"
     echo "gs://wowless.dev/logs/$out"
   done
 else
   out="$product-$ts.txt"
-  env HOME=/root /usr/local/bin/lua wowless.lua "$loglevel" "$product" "$gameversion" > "out/$out"
+  env HOME=/root bin/run.sh "$loglevel" "$product" "$gameversion" > "out/$out"
   gsutil cp "out/$out" "gs://wowless.dev/logs/$out"
   echo "gs://wowless.dev/logs/$out"
 fi

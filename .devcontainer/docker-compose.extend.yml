@@ -1,0 +1,8 @@
+version: '3.9'
+services:
+  web:
+    command: sleep infinity
+    ports:
+    - "8080"
+    volumes:
+    - ..:/workspace:cached

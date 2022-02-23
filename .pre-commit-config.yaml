@@ -9,10 +9,6 @@ repos:
   - id: check-yaml
   - id: end-of-file-fixer
   - id: trailing-whitespace
-- repo: https://github.com/pryorda/dockerfilelint-precommit-hooks
-  rev: v0.1.0
-  hooks:
-  - id: dockerfilelint
 - repo: https://github.com/shellcheck-py/shellcheck-py
   rev: v0.8.0.1
   hooks:

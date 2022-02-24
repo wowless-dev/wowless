@@ -32,7 +32,7 @@ jobs:
     - run: gcloud auth configure-docker us-central1-docker.pkg.dev
     - uses: satackey/action-docker-layer-caching@v0.0.11
     - run: docker-compose build
-    - run: docker tag wowless-dev/wowless:web us-central1-docker.pkg.dev/www-wowless-dev/docker/wowless:latest
+    - run: docker tag wowless-dev/wowless:base us-central1-docker.pkg.dev/www-wowless-dev/docker/wowless:latest
     - run: docker push us-central1-docker.pkg.dev/www-wowless-dev/docker/wowless:latest
     - uses: google-github-actions/deploy-cloudrun@v0
       with:

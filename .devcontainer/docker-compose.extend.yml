@@ -3,7 +3,7 @@ services:
   web:
     command: 'true'
   dev:
-    build: .
+    build: .devcontainer
     command: sleep infinity
     depends_on:
     - web

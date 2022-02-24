@@ -1,11 +1,19 @@
-FROM wowless/base
+FROM lua-wow-tools/wowless:base
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] \
     http://packages.cloud.google.com/apt cloud-sdk main" | \
     tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
     apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
 RUN apt update && \
-    apt -y install libpcre3-dev libssl-dev perl make build-essential curl google-cloud-sdk && \
+    apt -y install \
+    libpcre3-dev \
+    libssl-dev \
+    build-essential \
+    curl \
+    google-cloud-sdk \
+    make \
+    perl \
+    python3 && \
     apt clean
 RUN wget https://openresty.org/download/openresty-1.19.9.1.tar.gz && \
     tar zxvf openresty-1.19.9.1.tar.gz && \
@@ -19,6 +27,7 @@ WORKDIR /opt/wowless
 COPY wowless/ wowless/
 RUN mkdir -p /root/.cache/luadbd && \
     cd wowless/tainted-lua && \
+    rm -rf build && \
     cmake --preset linux && \
     cmake --build --preset linux && \
     cd .. && \

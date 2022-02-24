@@ -1,6 +1,9 @@
 version: '3.9'
 services:
   web:
+    command: 'true'
+  dev:
+    build: .devcontainer
     command: sleep infinity
-    ports:
-    - "8080"
+    depends_on:
+    - web

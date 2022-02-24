@@ -1,4 +1,9 @@
 version: '3.9'
 services:
   web:
+    command: 'true'
+  dev:
+    build: .
     command: sleep infinity
+    depends_on:
+    - web

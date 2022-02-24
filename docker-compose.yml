@@ -7,4 +7,4 @@ services:
     build: .
     depends_on:
     - base
-    image: wowless-dev/wowless:web
+    image: wowless-dev/wowless:base

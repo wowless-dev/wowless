@@ -1,8 +1,10 @@
 version: '3.9'
 services:
   base:
-    build: wowless/.devcontainer
-    image: wowless/base
+    build: wowless
+    image: lua-wow-tools/wowless:base
   web:
     build: .
-    image: wowless/web
+    depends_on:
+    - base
+    image: wowless-dev/wowless:web

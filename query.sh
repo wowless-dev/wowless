@@ -29,13 +29,13 @@ if [ -f "$addonfile" ]; then
   unzip -qq -o -d "$addondir" "$addonfile"
   for d in "$addondir"/*; do
     out="$product-$addon-$(basename "$d")-$ts.txt"
-    env HOME=/root bin/run.sh "$loglevel" "$product" "$gameversion" "$d" > "out/$out"
+    env HOME=/root bin/run.sh --product "$product" --loglevel "$loglevel" --addondir "$d" > "out/$out"
     gsutil cp "out/$out" "gs://wowless.dev/logs/$out"
     echo "gs://wowless.dev/logs/$out"
   done
 else
   out="$product-$ts.txt"
-  env HOME=/root bin/run.sh "$loglevel" "$product" "$gameversion" > "out/$out"
+  env HOME=/root bin/run.sh --product "$product" --loglevel "$loglevel" > "out/$out"
   gsutil cp "out/$out" "gs://wowless.dev/logs/$out"
   echo "gs://wowless.dev/logs/$out"
 fi

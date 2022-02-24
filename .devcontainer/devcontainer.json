@@ -1,6 +1,7 @@
 {
     "dockerComposeFile": ["../docker-compose.yml", "docker-compose.extend.yml"],
     "initializeCommand": "git submodule update --init --recursive",
-	"postCreateCommand": "pre-commit install && pre-commit run -a",
+    "name": "wowless-dev/wowless",
+    "postCreateCommand": "pre-commit install && pre-commit run -a",
     "service": "dev"
 }

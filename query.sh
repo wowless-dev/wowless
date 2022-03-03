@@ -30,7 +30,7 @@ if [ -f "$addonfile" ]; then
   for d in "$addondir"/*; do
     out="$product-$addon-$(basename "$d")-$ts.txt"
     docker run -t --rm \
-    --mount type=bind,src=$PWD/extracts,dst=/wowless/extracts \
+    --mount type=bind,src="$PWD"/extracts,dst=/wowless/extracts \
     --mount type=bind,src=/root/.cache/luadbd,dst=/root/.cache/luadbd \
     ghcr.io/lua-wow-tools/wowless:latest \
     bin/run.sh --product "$product" --loglevel "$loglevel" --addondir "$d" > "out/$out"
@@ -40,7 +40,7 @@ if [ -f "$addonfile" ]; then
 else
   out="$product-$ts.txt"
   docker run -t --rm \
-  --mount type=bind,src=$PWD/extracts,dst=/wowless/extracts \
+  --mount type=bind,src="$PWD"/extracts,dst=/wowless/extracts \
   --mount type=bind,src=/root/.cache/luadbd,dst=/root/.cache/luadbd \
   ghcr.io/lua-wow-tools/wowless:latest \
   bin/run.sh --product "$product" --loglevel "$loglevel" > "out/$out"

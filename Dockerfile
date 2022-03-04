@@ -64,8 +64,6 @@ CMD service docker start \
   && \
     sleep 1 \
   && \
-    docker pull ghcr.io/lua-wow-tools/wowless:latest \
-  && \
     mkdir -p /root/.cache/luadbd \
   && \
     /usr/local/openresty/nginx/sbin/nginx -p . -c nginx.conf

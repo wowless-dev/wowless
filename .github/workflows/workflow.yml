@@ -24,6 +24,8 @@ jobs:
     - run: gcloud auth configure-docker us-central1-docker.pkg.dev
     - uses: docker/build-push-action@v2
       with:
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
         push: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
         tags: us-central1-docker.pkg.dev/www-wowless-dev/docker/wowless:latest
   release:
